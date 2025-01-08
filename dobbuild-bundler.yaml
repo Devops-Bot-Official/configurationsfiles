@@ -1,0 +1,23 @@
+mode: remote
+identifier: server
+category: devops
+username: root
+
+jobs:
+  - stages:
+      - name: Setup and Clone
+        tasks:
+          setup_and_clone:
+            enabled: true
+            branches: [master]
+            clone_dir: "/tmp/sample_bundler_project"
+            source_url: "https://github.com/deeeye2/sample_bundler_project.git"
+
+
+
+
+      - name: Bundler Tasks
+        tasks:
+          bundler:
+            enabled: true
+            task: "rake"
