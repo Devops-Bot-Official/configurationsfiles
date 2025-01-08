@@ -1,0 +1,20 @@
+mode: remote
+identifier: server
+category: devops
+username: root
+
+jobs:
+  - stages:
+      - name: Setup and Clone
+        tasks:
+          setup_and_clone:
+            enabled: true
+            branches: [master]
+            clone_dir: "/tmp/clone_repo_trial"
+            source_url: "https://github.com/deeeye2/bazel-app.git" # Replace with your repository URL
+
+      - name: Bazel Build
+        tasks:
+          bazel:
+            enabled: true
+            output_dir: "/tmp/bazel_artifacts"
