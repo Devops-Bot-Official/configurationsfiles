@@ -1,0 +1,382 @@
+mode: remote
+identifier: agent2
+category: dev
+username: root
+jobs:
+  - stages:
+      - name: Manage asynchronous tasks
+        tasks:
+          task_control:
+            enabled: true
+            steps:
+              - command: "/path/to/long_task.sh"
+                async_timeout: 300
+                retries: 30
+                delay: 10
+
+mode: remote
+identifier: agent2
+category: dev
+username: root
+jobs:
+  - stages:
+      - name: Manage MySQL and PostgreSQL databases
+        tasks:
+          database_management:
+            enabled: true
+            steps:
+              - type: mysql
+                user: myuser
+                password: mypassword
+                priv: '*.*:ALL'
+                state: present
+              - type: postgresql
+                name: mydb
+                state: present
+
+mode: remote
+identifier: agent2
+category: dev
+username: root
+jobs:
+  - stages:
+      - name: Obtain Let's Encrypt certificate
+        tasks:
+          letsencrypt_management:
+            enabled: true
+            steps:
+              - account_key_src: /etc/ssl/private/account.key
+                csr_src: /etc/ssl/csr/mycsr.csr
+                dest: /etc/ssl/certs/mycert.crt
+                chain_dest: /etc/ssl/certs/mychain.pem
+
+mode: remote
+identifier: haproxy-node
+category: prod
+username: root
+jobs:
+  - stages:
+      - name: Configure and restart HAProxy
+        tasks:
+          haproxy_management:
+            enabled: true
+            steps:
+              - action: configure
+                src: /local/path/to/haproxy.cfg.j2
+                dest: /etc/haproxy/haproxy.cfg
+              - action: restart
+                service_name: haproxy
+
+mode: remote
+identifier: k8s-master
+category: prod
+username: root
+jobs:
+  - stages:
+      - name: Manage Kubernetes Deployment
+        tasks:
+          k8s_management:
+            enabled: true
+            steps:
+              - action: create
+                definition:
+                  apiVersion: apps/v1
+                  kind: Deployment
+                  metadata:
+                    name: my-deployment
+                    namespace: default
+                  spec:
+                    replicas: 2
+                    selector:
+                      matchLabels:
+                        app: my-app
+                    template:
+                      metadata:
+                        labels:
+                          app: my-app
+                      spec:
+                        containers:
+                        - name: nginx
+                          image: nginx:latest
+                          ports:
+                          - containerPort: 80
+              - action: delete
+                definition:
+                  apiVersion: apps/v1
+                  kind: Deployment
+                  metadata:
+                    name: my-deployment
+                    namespace: default
+
+mode: remote
+identifier: agent2
+category: dev
+username: root
+jobs:
+  - stages:
+      - name: Manage Docker containers and images
+        tasks:
+          docker_management:
+            enabled: true
+            steps:
+              - action: build_image
+                name: my_image
+                dockerfile_path: /path/to/Dockerfile
+                context: /path/to/context
+              - action: pull_image
+                name: nginx
+                tag: latest
+              - action: start_container
+                name: my_container
+                image: nginx:latest
+                state: started
+
+mode: remote
+identifier: agent2
+category: dev
+username: root
+jobs:
+  - stages:
+      - name: Manage SELinux boolean
+        tasks:
+          selinux_boolean_management:
+            enabled: true
+            steps:
+              - name: httpd_can_network_connect
+                state: true
+                persistent: true
+
+########
+
+mode: remote
+identifier: agent2
+category: job_scheduling
+username: root
+jobs:
+  - stages:
+      - name: Schedule Jobs
+        tasks:
+          job_scheduling:
+            enabled: true
+            steps:
+              - command: "/usr/local/bin/backup.sh"
+                when: "now + 1 hour"
+              - command: "/usr/local/bin/cleanup.sh"
+                when: "tomorrow 3pm"
+
+mode: remote
+identifier: agent2
+category: podman_container_management
+username: root
+jobs:
+  - stages:
+      - name: Manage Podman Containers
+        tasks:
+          podman_container_management:
+            enabled: true
+            steps:
+              - name: my_container
+                image: nginx
+                state: started
+              - name: another_container
+                image: alpine
+                state: started
+
+mode: remote
+identifier: agent2
+category: security_compliance_management
+username: root
+jobs:
+  - stages:
+      - name: Ensure Security and Compliance
+        tasks:
+          security_compliance_management:
+            enabled: true
+            steps:
+              - type: auditd_service
+                params:
+                  name: auditd
+                  state: started
+              - type: fail2ban_template
+                params:
+                  src: /local/path/to/fail2ban.local.j2
+                  dest: /etc/fail2ban/jail.local
+
+mode: remote
+identifier: agent2
+category: storage_solution_management
+username: root
+jobs:
+  - stages:
+      - name: Manage Ceph Volumes
+        tasks:
+          storage_solution_management:
+            enabled: true
+            steps:
+              - cluster: ceph
+                action: create
+                objectstore: bluestore
+                data: /dev/sdb
+              - cluster: ceph
+                action: create
+                objectstore: filestore
+                data: /dev/sdc
+
+mode: remote
+identifier: agent2
+category: message_queue_management
+username: root
+jobs:
+  - stages:
+      - name: Manage RabbitMQ Users
+        tasks:
+          message_queue_management:
+            enabled: true
+            steps:
+              - user: myuser
+                password: secret
+                tags: administrator
+              - user: guest
+                password: guestpass
+                tags: monitoring
+
+
+mode: remote
+identifier: agent2
+category: cluster_management
+username: root
+jobs:
+  - stages:
+      - name: Configure and Start Cluster
+        tasks:
+          cluster_management:
+            enabled: true
+            steps:
+              - config: /etc/corosync/corosync.conf
+                start: true
+
+mode: remote
+identifier: agent2
+category: backup_restore
+username: root
+jobs:
+  - stages:
+      - name: Backup and Restore Files
+        tasks:
+          backup_restore:
+            enabled: true
+            steps:
+              - action: archive
+                src: /var/logs
+                dest: /backup/logs.tar.gz
+              - action: unarchive
+                src: /backup/logs.tar.gz
+                dest: /var/logs
+                remote_src: true
+
+mode: remote
+identifier: agent2
+category: network_config
+username: root
+jobs:
+  - stages:
+      - name: Configure DNS and Network Interfaces
+        tasks:
+          network_configuration:
+            enabled: true
+            steps:
+              - name: eth0
+                state: up
+                address: 192.168.1.10
+                netmask: 24
+                gateway: 192.168.1.1
+
+
+mode: remote
+identifier: agent2
+category: monitoring
+username: root
+jobs:
+  - stages:
+      - name: Configure Monitoring and Logging
+        tasks:
+          monitoring_management:
+            enabled: true
+            steps:
+              - type: zabbix_host
+                params:
+                  server_url: http://zabbix.example.com
+                  login_user: admin
+                  login_password: secret
+                  host_name: myhost
+                  groups: 
+                    - Linux servers
+                  interfaces:
+                    - type: 1
+                      main: 1
+                      useip: 1
+                      ip: 192.168.1.1
+                      dns: ''
+                      port: 10050
+              - type: grafana_datasource
+                params:
+                  url: http://grafana.example.com
+                  name: Prometheus
+                  type: prometheus
+                  access: proxy
+
+
+mode: remote
+identifier: agent2
+category: cert_management
+username: root
+jobs:
+  - stages:
+      - name: Generate Certificates and Keys
+        tasks:
+          certificate_key_management:
+            enabled: true
+            steps:
+              - type: openssl_certificate
+                params:
+                  privatekey_path: /etc/ssl/private/mykey.pem
+                  path: /etc/ssl/certs/mycert.pem
+                  csr_path: /etc/ssl/csr/mycsr.pem
+                  provider: selfsigned
+                  subject:
+                    common_name: example.com
+
+
+mode: remote
+identifier: agent2
+category: monitoring
+username: admin
+jobs:
+  - stages:
+      - name: Setup Monitoring and Logging
+        tasks:
+          monitoring_logging:
+            enabled: true
+            steps:
+              - type: zabbix_host
+                params:
+                  server_url: http://zabbix.example.com
+                  login_user: admin
+                  login_password: secret
+                  host_name: myhost
+                  groups: 
+                    - Linux servers
+                  interfaces:
+                    - type: 1
+                      main: 1
+                      useip: 1
+                      ip: 192.168.1.1
+                      dns: ''
+                      port: 10050
+              - type: grafana_datasource
+                params:
+                  url: http://grafana.example.com
+                  name: Prometheus
+                  type: prometheus
+                  access: proxy
+                  url: http://prometheus.example.com
