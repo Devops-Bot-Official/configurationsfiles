@@ -1,0 +1,16 @@
+resources:
+
+  memorydb_clusters:
+    - name: my-memorydb-cluster
+      node_type: db.r6g.large
+      region: us-east-1
+      engine_version: "7.0"  # Ensure it's a stri
+      acl_name: open-access  # Required parameter
+      subnet_group_name: my-subnet
+      security_group_ids:
+        - sg-04ac7dc75e1f54b3a
+      tags:
+        - Key: Environment
+          Value: Production
+        - Key: Purpose
+          Value: Caching
