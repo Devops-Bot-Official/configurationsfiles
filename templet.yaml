@@ -1,0 +1,37 @@
+    def handle_auto_completion(self):
+        """Detects predefined keywords and auto-fills content."""
+        text = self.toPlainText()
+
+        if text.endswith("# ec2") or text.endswith("// ec2"):
+            # ✅ Auto-fill EC2 instance template
+            ec2_template = """resources:
+  ec2_instances:
+    - name: "EC2-Instance"
+      instance_type: "t2.micro"
+      ami_id: "ami-12345678"
+      key_name: "my-key"
+      security_group: "sg-12345"
+      subnet_id: "subnet-12345"
+"""
+            self.insertPlainText("\n" + ec2_template)  # ✅ Insert template
+        if text.endswith("# sc_bucket") or text.endswith("// s3_bucket"):
+            # ✅ Auto-fill EC2 instance template
+            s3_template = """resources:
+  s3_buckets:
+    - name: "my-s3-bucket"
+      region: "us-east-1"
+      public_access_block: true  # Block public access to the bucket
+      versioning: true  # Enable versioning
+      lifecycle_rules:
+        - id: "ExpireOldObjects"
+          prefix: "logs/"
+          status: "Enabled"
+          expiration_in_days: 30  # Automatically delete objects older than 30 days
+      logging:
+        TargetBucket: "my-logging-bucket"
+        TargetPrefix: "logs/"
+      encryption:
+        SSEAlgorithm: "AES256"  # Server-side encryption using AES-256
+
+"""
+            self.insertPlainText("\n" + s3_template)  # ✅ Insert template
